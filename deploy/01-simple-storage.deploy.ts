@@ -1,18 +1,13 @@
-const {
-    ethers,
-    run,
-    network,
-    deployments,
-    getNamedAccounts,
-} = require("hardhat")
-const { verify } = require("../utils/verify.js")
+import { ethers, run, network, deployments, getNamedAccounts } from "hardhat"
+import verify from "../utils/verify"
+import { HardhatRuntimeEnvironment } from "hardhat/types"
 
-
-module.exports = async function ({ deployments, getNamedAccounts }) {
+module.exports = async function ( hre: HardhatRuntimeEnvironment) {
+    const { deployments, getNamedAccounts, network, ethers } = hre
     const { deployer } = await getNamedAccounts()
     const { deploy, log } = deployments
     const chainId = network.config.chainId
-    const args = []
+    const args: any = []
     //log(`deployer address: ${deployer}`)
     //log("Deploying contract...")
     const simpleStorage = await deploy("SimpleStorage", {
@@ -30,7 +25,7 @@ module.exports = async function ({ deployments, getNamedAccounts }) {
     }
 
     // get current favorite number and update the value  (only if on development chain)
-    if(chainId === 31337) {
+    if (chainId === 31337) {
         const simpleStorage = await ethers.getContract("SimpleStorage")
         const currentValue = await simpleStorage.retrieve()
         console.log(`Current value is: ${currentValue}`)
@@ -40,7 +35,6 @@ module.exports = async function ({ deployments, getNamedAccounts }) {
         const updatedValue = await simpleStorage.retrieve()
         console.log(`Updated value is: ${updatedValue}`)
     }
-    
 }
 
 module.exports.tags = ["all", "main", "simple"]

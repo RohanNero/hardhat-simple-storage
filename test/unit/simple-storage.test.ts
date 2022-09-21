@@ -1,15 +1,17 @@
-const { ethers } = require("hardhat")
-const { expect, assert } = require("chai")
-const { developmentChains } = require("../../helper-hardhat-config")
+import { ethers } from "hardhat"
+import { expect, assert } from "chai"
+import { developmentChains } from "../../helper-hardhat-config"
+import { SimpleStorage, SimpleStorage__factory } from "../../typechain-types"
 
 !developmentChains.includes(network.name)
     ? describe.skip
     : describe("SimpleStorage", function () {
-          let simpleStorageFactory, simpleStorage
+          let simpleStorageFactory: SimpleStorage__factory
+          let simpleStorage: SimpleStorage
           beforeEach(async function () {
-              simpleStorageFactory = await ethers.getContractFactory(
+              simpleStorageFactory = (await ethers.getContractFactory(
                   "SimpleStorage"
-              )
+              )) as SimpleStorage__factory
               simpleStorage = await simpleStorageFactory.deploy()
           })
           it("Should start with a favorite number of 0", async function () {

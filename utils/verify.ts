@@ -1,11 +1,11 @@
-async function verify(contractAddress, args) {
+const verify = async function (contractAddress: string, args: any[]) {
     console.log("Verifying contract...")
     try {
         await run("verify:verify", {
             address: contractAddress,
             constructorArgs: args,
         })
-    } catch (e) {
+    } catch (e: any) {
         if (e.message.toLowerCase().includes("already verified")) {
             console.log("Already verified!")
         } else {
@@ -14,4 +14,4 @@ async function verify(contractAddress, args) {
     }
 }
 
-module.exports = { verify }
+export default verify
